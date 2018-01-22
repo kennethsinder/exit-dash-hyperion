@@ -1,5 +1,6 @@
 # coding=utf-8
 from game import *
+import os
 
 class Pool(object):
 
@@ -9,15 +10,15 @@ class Pool(object):
         self.width, self.height = width, height
 
         # Platform images
-        self.image = pygame.image.load('environment\\main\\' + style + 'Mid.png').convert_alpha()
-        self.plainImage = pygame.image.load('environment\\main\\' + style + 'Center.png')
-        self.leftImage = pygame.image.load('environment\\main\\' + style + 'CliffLeft.png').convert_alpha()
-        self.rightImage = pygame.image.load('environment\\main\\' + style + 'CliffRight.png').convert_alpha()
+        self.image = pygame.image.load('environment'+os.sep+'main'+os.sep+'' + style + 'Mid.png').convert_alpha()
+        self.plainImage = pygame.image.load('environment'+os.sep+'main'+os.sep+'' + style + 'Center.png')
+        self.leftImage = pygame.image.load('environment'+os.sep+'main'+os.sep+'' + style + 'CliffLeft.png').convert_alpha()
+        self.rightImage = pygame.image.load('environment'+os.sep+'main'+os.sep+'' + style + 'CliffRight.png').convert_alpha()
         self.tileWidth = pygame.Surface.get_width(self.image)
 
         # Water images
-        self.waterFilled = pygame.image.load('environment\\main\\liquidWater.png').convert_alpha()
-        self.waterTop = pygame.image.load('environment\\main\\liquidWaterTop_mid.png').convert_alpha()
+        self.waterFilled = pygame.image.load('environment'+os.sep+'main'+os.sep+'liquidWater.png').convert_alpha()
+        self.waterTop = pygame.image.load('environment'+os.sep+'main'+os.sep+'liquidWaterTop_mid.png').convert_alpha()
 
         # Update coordinates
         self.width -= self.width % self.tileWidth

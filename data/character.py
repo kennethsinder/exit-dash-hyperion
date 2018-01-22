@@ -2,6 +2,7 @@
 from random import randint
 import math
 import pygame
+import os
 
 class Character(object):
 
@@ -43,7 +44,7 @@ class Character(object):
         self.coins = 0
 
         # Load images and save the height and width of the character
-        filePrefix = 'character\\main\\p' + str(whichChar)
+        filePrefix = 'character'+os.sep+'main'+os.sep+'p' + str(whichChar)
         self.standingImage = pygame.image.load(filePrefix + '_front.png').convert_alpha()
         self.jumpingImageL = pygame.image.load(filePrefix + '_jump_l.png').convert_alpha()
         self.jumpingImageR = pygame.image.load(filePrefix + '_jump.png').convert_alpha()
@@ -56,7 +57,7 @@ class Character(object):
         self.walkImagesR = [] * 11
         self.walkImagesL = [] * 11
         for i in range(1, 11):
-            walkImage = pygame.image.load(filePrefix + '_walk\PNG\p' + str(whichChar) + '_walk' + str(i) +
+            walkImage = pygame.image.load(filePrefix + '_walk'+os.sep+'PNG'+os.sep+'p' + str(whichChar) + '_walk' + str(i) +
                                           ".png").convert_alpha()
             self.walkImagesR.append(walkImage)
             walkImageL = pygame.transform.flip(walkImage, True, False)

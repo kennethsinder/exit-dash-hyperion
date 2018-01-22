@@ -1,12 +1,13 @@
 # coding=utf-8
 import pygame
+import os
 
 class Checkpoint(object):
 
     def __init__(self, x, y, isBroken=False):
         self.x = x; self.y = y
-        self.image = pygame.image.load('environment\\main\\fence.png').convert_alpha()
-        self.imageBroken = pygame.image.load('environment\\main\\fenceBroken.png').convert_alpha()
+        self.image = pygame.image.load('environment'+os.sep+'main'+os.sep+'fence.png').convert_alpha()
+        self.imageBroken = pygame.image.load('environment'+os.sep+'main'+os.sep+'fenceBroken.png').convert_alpha()
         self.width = pygame.Surface.get_width(self.image)
         self.height = pygame.Surface.get_height(self.image)
         self.broken = isBroken

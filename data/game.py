@@ -106,15 +106,15 @@ class Game(object):
         self.textTimers = [0] * 10
 
         # Music
-        self.themeSong = 'music\\waking_devil.mp3'
-        self.mainMusic = 'music\\char1_3.ogg'
-        self.gameOverMusic = 'music\\gameover.mp3'
+        self.themeSong = 'music'+os.sep+'waking_devil.mp3'
+        self.mainMusic = 'music'+os.sep+'char1_3.ogg'
+        self.gameOverMusic = 'music'+os.sep+'gameover.mp3'
     
         # Fonts
-        self.genericFont = pygame.font.Font('fonts\\2lines.ttf', 48)
-        self.medFont = pygame.font.Font('fonts\\jetset.ttf', 24)
-        self.smlFont = pygame.font.Font('fonts\\atari.ttf', 16)
-        self.smoothFont = pygame.font.Font('fonts\\source.otf', 18)
+        self.genericFont = pygame.font.Font('fonts'+os.sep+'2lines.ttf', 48)
+        self.medFont = pygame.font.Font('fonts'+os.sep+'jetset.ttf', 24)
+        self.smlFont = pygame.font.Font('fonts'+os.sep+'atari.ttf', 16)
+        self.smoothFont = pygame.font.Font('fonts'+os.sep+'source.otf', 18)
 
         # Level theme
         self.theme = 'stone'
@@ -122,26 +122,26 @@ class Game(object):
     
         # Backgrounds
         self.origin = (0, 0)
-        self.bgrdTitle = pygame.image.load('backgrounds\\main\\title_bgrd_compressed.png').convert()
-        self.bgrdGloomy = pygame.image.load('backgrounds\\main\\red_sky.jpg').convert()
-        self.bgrdYellowSky = pygame.image.load('backgrounds\\main\\yellow-sky.jpg').convert()
-        self.bgrdCastle = pygame.image.load('backgrounds\\main\\bg_castle.png').convert()
+        self.bgrdTitle = pygame.image.load('backgrounds'+os.sep+'main'+os.sep+'title_bgrd_compressed.png').convert()
+        self.bgrdGloomy = pygame.image.load('backgrounds'+os.sep+'main'+os.sep+'red_sky.jpg').convert()
+        self.bgrdYellowSky = pygame.image.load('backgrounds'+os.sep+'main'+os.sep+'yellow-sky.jpg').convert()
+        self.bgrdCastle = pygame.image.load('backgrounds'+os.sep+'main'+os.sep+'bg_castle.png').convert()
         self.bgrdCastle = pygame.transform.smoothscale(self.bgrdCastle, (3 * pygame.Surface.get_width(self.bgrdCastle),
                                                                3 * pygame.Surface.get_height(self.bgrdCastle)))
-        self.bgrdDesert = pygame.image.load('backgrounds\\main\\bg_desert.png').convert()
+        self.bgrdDesert = pygame.image.load('backgrounds'+os.sep+'main'+os.sep+'bg_desert.png').convert()
         self.bgrd = None
         self.activeBackground = None
 
         # Cursor
         self.prevCursorVisibleState = pygame.mouse.set_visible(False)   # Hide existing cursor
-        self.cursorImage = pygame.image.load('hud\\pointer.png').convert_alpha()
+        self.cursorImage = pygame.image.load('hud'+os.sep+'pointer.png').convert_alpha()
         self.cursorImage = pygame.transform.scale2x(self.cursorImage)
-        self.cursorClickedImage = pygame.image.load('hud\\pointerClicked.png').convert_alpha()
+        self.cursorClickedImage = pygame.image.load('hud'+os.sep+'pointerClicked.png').convert_alpha()
         self.cursorClickedImage = pygame.transform.scale2x(self.cursorClickedImage)
 
         # Options UI Images
-        self.slider = pygame.image.load('ui\\grey_sliderHorizontal.png').convert_alpha()
-        self.sliderPointer = pygame.image.load('ui\\grey_sliderDown.png').convert_alpha()
+        self.slider = pygame.image.load('ui'+os.sep+'grey_sliderHorizontal.png').convert_alpha()
+        self.sliderPointer = pygame.image.load('ui'+os.sep+'grey_sliderDown.png').convert_alpha()
 
     # --------------------------------------------------------------------------------------------------------------
 
@@ -1250,7 +1250,7 @@ class Game(object):
         if self.drawButton('Editor', [self.screenW // 2, self.screenH - 230]):
             self.editorResult = self.launchLevelEditor()
         if self.editorResult:
-            self.printText('Level saved to levels\\lvl_custom' + self.levelExtension +
+            self.printText('Level saved to levels'+os.sep+'lvl_custom' + self.levelExtension +
                            '. Change name to lvl_{desiredLevelNum}' + self.levelExtension + 'to replace existing level',
                            self.smoothFont, white, [20, self.screenH - 25])
 
@@ -1390,7 +1390,7 @@ class Game(object):
     # --------------------------------------------------------------------------------------------------------------
 
     def loadLevelHint(self, level):
-        fileName = 'levels\\lvlhints' + self.levelExtension
+        fileName = 'levels'+os.sep+'lvlhints' + self.levelExtension
         if not os.path.isfile(fileName):
             self.levelHint = self.interpretHintString('None')
         permissions = 'r'

@@ -9,10 +9,10 @@ class Door(object):
         self.locked = True
 
         # Load images
-        self.imageBottom = pygame.image.load('environment\\main\\door_openMid.png').convert_alpha()
-        self.imageTop = pygame.image.load('environment\\main\\door_openTop.png').convert_alpha()
-        self.imageBottomLocked = pygame.image.load('environment\\main\\door_closedMid.png').convert_alpha()
-        self.imageTopLocked = pygame.image.load('environment\\main\\door_closedTop.png').convert_alpha()
+        self.imageBottom = pygame.image.load('environment'+os.sep+'main'+os.sep+'door_openMid.png').convert_alpha()
+        self.imageTop = pygame.image.load('environment'+os.sep+'main'+os.sep+'door_openTop.png').convert_alpha()
+        self.imageBottomLocked = pygame.image.load('environment'+os.sep+'main'+os.sep+'door_closedMid.png').convert_alpha()
+        self.imageTopLocked = pygame.image.load('environment'+os.sep+'main'+os.sep+'door_closedTop.png').convert_alpha()
         self.bottomHeight = pygame.Surface.get_height(self.imageBottom)
         self.topHeight = pygame.Surface.get_height(self.imageTop)
         self.topBlankSpace = 30

@@ -21,27 +21,27 @@ class AICharacter(Character):
 
         # Load images
         # slime
-        self.slimeDL = pygame.image.load('enemies\\slime\\slime' + self.colour +'_squashed.png').convert_alpha()
-        self.slimeDR = pygame.image.load('enemies\\slime\\slime' + self.colour + '_squashedR.png').convert_alpha()
-        self.slimeL = pygame.image.load('enemies\\slime\\slime' + self.colour + '_walk.png').convert_alpha()
-        self.slimeR = pygame.image.load('enemies\\slime\\slime' + self.colour + '_walkR.png').convert_alpha()
+        self.slimeDL = pygame.image.load('enemies'+os.sep+'slime'+os.sep+'slime' + self.colour +'_squashed.png').convert_alpha()
+        self.slimeDR = pygame.image.load('enemies'+os.sep+'slime'+os.sep+'slime' + self.colour + '_squashedR.png').convert_alpha()
+        self.slimeL = pygame.image.load('enemies'+os.sep+'slime'+os.sep+'slime' + self.colour + '_walk.png').convert_alpha()
+        self.slimeR = pygame.image.load('enemies'+os.sep+'slime'+os.sep+'slime' + self.colour + '_walkR.png').convert_alpha()
         # fly
-        self.flyDL = pygame.image.load('enemies\\fly\\fly_dead.png').convert_alpha()
-        self.flyDR = pygame.image.load('enemies\\fly\\fly_dead_r.png').convert_alpha()
-        self.flyL = pygame.image.load('enemies\\fly\\fly_fly.png').convert_alpha()
-        self.flyR = pygame.image.load('enemies\\fly\\fly_fly_r.png').convert_alpha()
+        self.flyDL = pygame.image.load('enemies'+os.sep+'fly'+os.sep+'fly_dead.png').convert_alpha()
+        self.flyDR = pygame.image.load('enemies'+os.sep+'fly'+os.sep+'fly_dead_r.png').convert_alpha()
+        self.flyL = pygame.image.load('enemies'+os.sep+'fly'+os.sep+'fly_fly.png').convert_alpha()
+        self.flyR = pygame.image.load('enemies'+os.sep+'fly'+os.sep+'fly_fly_r.png').convert_alpha()
         # fish
-        self.fishDL = pygame.image.load('enemies\\other\\fishGreen_dead.png').convert_alpha()
-        self.fishDR = pygame.image.load('enemies\\other\\fishGreen_dead_r.png').convert_alpha()
-        self.fishL = pygame.image.load('enemies\\other\\fishGreen_swim.png').convert_alpha()
-        self.fishR = pygame.image.load('enemies\\other\\fishGreen_swim_r.png').convert_alpha()
+        self.fishDL = pygame.image.load('enemies'+os.sep+'other'+os.sep+'fishGreen_dead.png').convert_alpha()
+        self.fishDR = pygame.image.load('enemies'+os.sep+'other'+os.sep+'fishGreen_dead_r.png').convert_alpha()
+        self.fishL = pygame.image.load('enemies'+os.sep+'other'+os.sep+'fishGreen_swim.png').convert_alpha()
+        self.fishR = pygame.image.load('enemies'+os.sep+'other'+os.sep+'fishGreen_swim_r.png').convert_alpha()
         # snail
-        self.snailL1 = pygame.image.load('enemies\\other\\snailWalk1.png').convert_alpha()
-        self.snailL2 = pygame.image.load('enemies\\other\\snailWalk2.png').convert_alpha()
-        self.snailR1 = pygame.image.load('enemies\\other\\snailWalk1R.png').convert_alpha()
-        self.snailR2 = pygame.image.load('enemies\\other\\snailWalk2R.png').convert_alpha()
-        self.snailDL = pygame.image.load('enemies\\other\\snailShell.png').convert_alpha()
-        self.snailDR = pygame.image.load('enemies\\other\\snailShellR.png').convert_alpha()
+        self.snailL1 = pygame.image.load('enemies'+os.sep+'other'+os.sep+'snailWalk1.png').convert_alpha()
+        self.snailL2 = pygame.image.load('enemies'+os.sep+'other'+os.sep+'snailWalk2.png').convert_alpha()
+        self.snailR1 = pygame.image.load('enemies'+os.sep+'other'+os.sep+'snailWalk1R.png').convert_alpha()
+        self.snailR2 = pygame.image.load('enemies'+os.sep+'other'+os.sep+'snailWalk2R.png').convert_alpha()
+        self.snailDL = pygame.image.load('enemies'+os.sep+'other'+os.sep+'snailShell.png').convert_alpha()
+        self.snailDR = pygame.image.load('enemies'+os.sep+'other'+os.sep+'snailShellR.png').convert_alpha()
         # general image properties
         self.imageL1, self.imageL2, self.imageR1, self.imageR2, self.imageDL, self.imageDR = [None] * 6
         self.deadWidth, self.deadHeight = [None] * 2

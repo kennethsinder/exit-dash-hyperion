@@ -1,5 +1,6 @@
 # coding=utf-8
 from data.game import *
+import os
 
 
 class Key(object):
@@ -9,7 +10,7 @@ class Key(object):
         self.visible = False
 
         # Load image
-        self.image = pygame.image.load('environment\\main\\key' + colour + '.png').convert_alpha()
+        self.image = pygame.image.load('environment'+os.sep+'main'+os.sep+'key' + colour + '.png').convert_alpha()
         self.width = pygame.Surface.get_width(self.image)
         self.height = pygame.Surface.get_height(self.image)
 

@@ -14,26 +14,26 @@ class Block(object):
         self.y = y
 
         # Load images
-        self.lockedImage = pygame.image.load('environment\\main\\lock_blue.png').convert_alpha()
-        self.coinBlockImage = pygame.image.load('environment\\main\\boxCoin.png').convert_alpha()
-        self.coinBlockUsedImage = pygame.image.load('environment\\main\\boxCoin_disabled.png').convert_alpha()
-        self.explosiveImage = pygame.image.load('environment\\main\\boxExplosive.png').convert_alpha()
-        self.explosiveUsedImage = pygame.image.load('environment\\main\\boxExplosive_disabled.png').convert_alpha()
-        self.regularImage = pygame.image.load('environment\\main\\boxItem.png').convert_alpha()
-        self.regularUsedImage = pygame.image.load('environment\\main\\boxItem_disabled.png').convert_alpha()
+        self.lockedImage = pygame.image.load('environment'+os.sep+'main'+os.sep+'lock_blue.png').convert_alpha()
+        self.coinBlockImage = pygame.image.load('environment'+os.sep+'main'+os.sep+'boxCoin.png').convert_alpha()
+        self.coinBlockUsedImage = pygame.image.load('environment'+os.sep+'main'+os.sep+'boxCoin_disabled.png').convert_alpha()
+        self.explosiveImage = pygame.image.load('environment'+os.sep+'main'+os.sep+'boxExplosive.png').convert_alpha()
+        self.explosiveUsedImage = pygame.image.load('environment'+os.sep+'main'+os.sep+'boxExplosive_disabled.png').convert_alpha()
+        self.regularImage = pygame.image.load('environment'+os.sep+'main'+os.sep+'boxItem.png').convert_alpha()
+        self.regularUsedImage = pygame.image.load('environment'+os.sep+'main'+os.sep+'boxItem_disabled.png').convert_alpha()
         self.explosion = []
         for i in range(0, 3):
-            explosionImage = pygame.image.load('environment\\main\\explosion' + str(i) + '.png').convert_alpha()
+            explosionImage = pygame.image.load('environment'+os.sep+'main'+os.sep+'explosion' + str(i) + '.png').convert_alpha()
             explosionImage = pygame.transform.scale2x(explosionImage)
             self.explosion.append(explosionImage)
         self.width = pygame.Surface.get_width(self.regularImage)
         self.height = pygame.Surface.get_height(self.regularImage)
 
         # Load sounds
-        self.explosionSfx = pygame.mixer.Sound('sounds\\synthetic_explosion_1.ogg')
+        self.explosionSfx = pygame.mixer.Sound('sounds'+os.sep+'synthetic_explosion_1.ogg')
 
         # Coin images and variables
-        self.coinImage = pygame.image.load('environment\\main\\coinGold.png').convert_alpha()
+        self.coinImage = pygame.image.load('environment'+os.sep+'main'+os.sep+'coinGold.png').convert_alpha()
         self.coinWidth = pygame.Surface.get_width(self.coinImage)
         self.coinHeight = pygame.Surface.get_height(self.coinImage)
         self.coinPos = [self.x - 15, self.y - self.coinHeight + 10,
@@ -41,7 +41,7 @@ class Block(object):
         self.coinVisible = False
 
         # Other images and related variables
-        self.starImage = pygame.image.load('items\\star.png').convert_alpha()
+        self.starImage = pygame.image.load('items'+os.sep+'star.png').convert_alpha()
         self.starWidth = pygame.Surface.get_width(self.starImage)
         self.starHeight = pygame.Surface.get_height(self.starImage)
 

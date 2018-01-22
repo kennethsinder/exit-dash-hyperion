@@ -1,5 +1,6 @@
 # coding=utf-8
 from data.game import *
+import os
 
 class FallingSpike(object):
     def __init__(self, x, y):
@@ -10,7 +11,7 @@ class FallingSpike(object):
         self.Vy = 0
 
         # Initialize image
-        self.image = pygame.image.load('environment\\main\\spikeTop.png')
+        self.image = pygame.image.load('environment'+os.sep+'main'+os.sep+'spikeTop.png')
         self.width = pygame.Surface.get_width(self.image)
         self.height = pygame.Surface.get_height(self.image)
         self.x -= int(0.5 * self.width)

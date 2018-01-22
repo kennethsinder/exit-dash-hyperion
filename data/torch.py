@@ -1,5 +1,5 @@
 # coding=utf-8
-import pygame, random
+import pygame, random, os
 
 
 class Torch(object):
@@ -8,9 +8,9 @@ class Torch(object):
         self.x = x
         self.y = y
         self.burning = False
-        self.onImage1 = pygame.image.load('environment\\main\\torchLit.png').convert_alpha()
-        self.onImage2 = pygame.image.load('environment\\main\\torchLit2.png').convert_alpha()
-        self.offImage = pygame.image.load('environment\\main\\torch.png').convert_alpha()
+        self.onImage1 = pygame.image.load('environment'+os.sep+'main'+os.sep+'torchLit.png').convert_alpha()
+        self.onImage2 = pygame.image.load('environment'+os.sep+'main'+os.sep+'torchLit2.png').convert_alpha()
+        self.offImage = pygame.image.load('environment'+os.sep+'main'+os.sep+'torch.png').convert_alpha()
         self.width = pygame.Surface.get_width(self.offImage)
         self.height = pygame.Surface.get_height(self.offImage)
 

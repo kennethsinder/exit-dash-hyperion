@@ -1,5 +1,6 @@
 # coding=utf-8
 import pygame
+import os
 
 class Platform(object):
 
@@ -13,14 +14,14 @@ class Platform(object):
         self.correctReversedCoords()
 
         # Load platform image
-        self.image = pygame.image.load('environment\\main\\' + style + 'Mid.png').convert_alpha()
+        self.image = pygame.image.load('environment'+os.sep+'main'+os.sep+'' + style + 'Mid.png').convert_alpha()
         self.tileWidth = pygame.Surface.get_width(self.image)
         self.width -= self.width % self.tileWidth
         self.height = pygame.Surface.get_height(self.image)
 
         # Load platform edge images
-        self.leftImage = pygame.image.load('environment\\main\\' + style + 'CliffLeft.png').convert_alpha()
-        self.rightImage = pygame.image.load('environment\\main\\' + style + 'CliffRight.png').convert_alpha()
+        self.leftImage = pygame.image.load('environment'+os.sep+'main'+os.sep+'' + style + 'CliffLeft.png').convert_alpha()
+        self.rightImage = pygame.image.load('environment'+os.sep+'main'+os.sep+'' + style + 'CliffRight.png').convert_alpha()
 
         # Cache the entire platform image to improve FPS
         self.imageCache = pygame.Surface([self.width, self.height], pygame.SRCALPHA)

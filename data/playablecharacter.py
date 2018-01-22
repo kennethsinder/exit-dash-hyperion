@@ -3,6 +3,7 @@ import math, sys, pygame, keymap as k
 from random import randint
 from pygame.locals import *
 from character import Character
+import os
 
 
 class PlayableCharacter(Character):
@@ -12,25 +13,25 @@ class PlayableCharacter(Character):
 
         # HUD images
         self.whichChar = whichChar
-        self.heartEmpty = pygame.image.load('hud\\hud_heartEmpty.png').convert_alpha()
-        self.heartHalf = pygame.image.load('hud\\hud_heartHalf.png').convert_alpha()
-        self.heartFull = pygame.image.load('hud\\hud_heartFull.png').convert_alpha()
+        self.heartEmpty = pygame.image.load('hud'+os.sep+'hud_heartEmpty.png').convert_alpha()
+        self.heartHalf = pygame.image.load('hud'+os.sep+'hud_heartHalf.png').convert_alpha()
+        self.heartFull = pygame.image.load('hud'+os.sep+'hud_heartFull.png').convert_alpha()
         self.heartWidth = pygame.Surface.get_width(self.heartFull)
         self.heartHeight = pygame.Surface.get_height(self.heartFull)
-        self.coin = pygame.image.load('hud\\hud_coins.png').convert_alpha()
+        self.coin = pygame.image.load('hud'+os.sep+'hud_coins.png').convert_alpha()
         self.coinWidth = pygame.Surface.get_width(self.coin)
-        self.coinsMultiplier = pygame.image.load('hud\\hud_x.png').convert_alpha()
+        self.coinsMultiplier = pygame.image.load('hud'+os.sep+'hud_x.png').convert_alpha()
         self.hudNumber = []
         for i in range(0, 10):
-            numberImage = pygame.image.load('hud\\hud_' + str(i) + '.png').convert_alpha()
+            numberImage = pygame.image.load('hud'+os.sep+'hud_' + str(i) + '.png').convert_alpha()
             self.hudNumber.append(numberImage)
         self.hudTextWidth = pygame.Surface.get_width(self.hudNumber[0])
         self.playerCoins = []
         for i in range(0, 3):
-            playerCoinImage = pygame.image.load('hud\\hud_p' + str(self.whichChar) + '.png').convert_alpha()
+            playerCoinImage = pygame.image.load('hud'+os.sep+'hud_p' + str(self.whichChar) + '.png').convert_alpha()
             self.playerCoins.append(playerCoinImage)
-        self.key = pygame.image.load('hud\\hud_keyBlue.png').convert_alpha()
-        self.noKey = pygame.image.load('hud\\hud_keyBlue_disabled.png').convert_alpha()
+        self.key = pygame.image.load('hud'+os.sep+'hud_keyBlue.png').convert_alpha()
+        self.noKey = pygame.image.load('hud'+os.sep+'hud_keyBlue_disabled.png').convert_alpha()
 
         # HUD variables
         self.spacing = 10
