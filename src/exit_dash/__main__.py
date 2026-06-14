@@ -5,6 +5,8 @@ Flags:
     --no-vsync        disable vertical sync
     --headless        run with no real display/audio (for CI and smoke tests)
     --frames N        run exactly N frames then exit (implies a bounded run)
+    --level N         start on level N (default 1)
+    --character N     play as character 1, 2 or 3 (default 1)
 """
 
 from __future__ import annotations
@@ -12,35 +14,8 @@ from __future__ import annotations
 import argparse
 import sys
 
-import pygame
-
 from exit_dash import __version__
-from exit_dash.core.constants import LOGICAL_SIZE, WINDOW_TITLE
-from exit_dash.core.input import InputState
-from exit_dash.core.scene import Quit, Scene, Transition
-
-
-class _SkeletonScene(Scene):
-    """Temporary placeholder shown until the real scenes land in later phases."""
-
-    def __init__(self) -> None:
-        self._font = pygame.font.SysFont(None, 48)
-        self._tick = 0
-
-    def handle_event(self, event: pygame.event.Event) -> Transition | None:
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-            return Quit()
-        return None
-
-    def update(self, dt: float, inp: InputState) -> Transition | None:
-        self._tick += 1
-        return None
-
-    def draw(self, surface: pygame.Surface, alpha: float) -> None:
-        surface.fill((12, 14, 28))
-        label = self._font.render(WINDOW_TITLE, True, (235, 235, 245))
-        rect = label.get_rect(center=(LOGICAL_SIZE[0] // 2, LOGICAL_SIZE[1] // 2))
-        surface.blit(label, rect)
+from exit_dash.core.constants import WINDOW_TITLE
 
 
 def _parse_args(argv: list[str] | None) -> argparse.Namespace:
@@ -54,22 +29,30 @@ def _parse_args(argv: list[str] | None) -> argparse.Namespace:
     parser.add_argument(
         "--frames", type=int, default=None, metavar="N", help="run exactly N frames then exit"
     )
+    parser.add_argument("--level", type=int, default=1, metavar="N", help="start on level N")
+    parser.add_argument(
+        "--character", type=int, default=1, choices=(1, 2, 3), help="character to play as"
+    )
     return parser.parse_args(argv)
 
 
 def main(argv: list[str] | None = None) -> int:
     args = _parse_args(argv if argv is not None else sys.argv[1:])
 
-    # Importing here keeps `--version`/`--help` fast and import-side-effect free.
+    # Import here so `--version`/`--help` stay fast and import-side-effect free.
     from exit_dash.core.app import Application
+    from exit_dash.core.settings import load_settings
+    from exit_dash.scenes.level import LevelScene
 
+    settings = load_settings()
     app = Application(
         headless=args.headless,
-        fullscreen=not args.windowed,
-        vsync=not args.no_vsync,
+        fullscreen=not args.windowed and settings.fullscreen,
+        vsync=not args.no_vsync and settings.vsync,
     )
     try:
-        app.run(_SkeletonScene(), max_frames=args.frames)
+        scene = LevelScene(args.level, args.character, settings, audio=app.audio_enabled)
+        app.run(scene, max_frames=args.frames)
     finally:
         app.quit()
     return 0

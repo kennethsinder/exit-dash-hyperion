@@ -21,9 +21,7 @@ class Key:
         self.width = self.image.get_width()
         self.height = self.image.get_height()
 
-    def update_and_draw(self, main_char: Character, surface: pygame.Surface) -> None:
-        if self.visible:
-            surface.blit(self.image, (self.x, self.y))
+    def update(self, main_char: Character) -> None:
         key_rect = pygame.Rect(int(self.x), int(self.y), self.width, self.height)
         char_rect = pygame.Rect(
             int(main_char.x), int(main_char.y), int(main_char.width), int(main_char.height)
@@ -31,3 +29,7 @@ class Key:
         if key_rect.colliderect(char_rect):
             main_char.has_key = True
             self.visible = False
+
+    def draw(self, surface: pygame.Surface) -> None:
+        if self.visible:
+            surface.blit(self.image, (self.x, self.y))

@@ -13,6 +13,7 @@ import os
 
 import pygame
 
+from exit_dash.core import resources
 from exit_dash.core.constants import (
     BLACK,
     FIXED_DT,
@@ -122,4 +123,7 @@ class Application:
         return self.frame_count
 
     def quit(self) -> None:
+        # Cached surfaces/fonts are bound to this pygame session; drop them so a later
+        # session (e.g. the next test) reloads fresh assets instead of stale handles.
+        resources.clear_cache()
         pygame.quit()
