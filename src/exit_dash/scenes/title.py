@@ -15,7 +15,7 @@ from exit_dash.core.constants import (
 )
 from exit_dash.core.input import InputState
 from exit_dash.core.paths import asset_path
-from exit_dash.core.scene import Quit, Replace, Scene, Transition
+from exit_dash.core.scene import Push, Quit, Replace, Scene, Transition
 from exit_dash.core.settings import Settings
 
 _CHARACTER_KEYS = {pygame.K_1: 1, pygame.K_2: 2, pygame.K_3: 3}
@@ -55,7 +55,25 @@ class TitleScene(Scene):
 
             char = _CHARACTER_KEYS[event.key]
             return Replace(LevelScene(1, char, self.settings, audio=self.audio))
+        if event.key == pygame.K_o:
+            from exit_dash.scenes.options import OptionsScene
+
+            return Push(OptionsScene(self.settings, audio=self.audio))
+        if event.key == pygame.K_e:
+            from exit_dash.scenes.editor import EditorScene
+
+            return Push(EditorScene(self.settings, audio=self.audio))
         return None
+
+    def on_resume(self, result: object | None) -> None:
+        # Returning from options/editor: restore the menu music if it was left enabled.
+        if (
+            self.audio
+            and self.settings.music_enabled
+            and pygame.mixer.get_init()
+            and not pygame.mixer.music.get_busy()
+        ):
+            self.on_enter()
 
     def update(self, dt: float, inp: InputState) -> Transition | None:
         return None
@@ -68,7 +86,10 @@ class TitleScene(Scene):
         surface.blit(title, title.get_rect(center=(LOGICAL_WIDTH // 2, 140)))
 
         prompt = self._font.render("Choose your character — press 1, 2 or 3", True, YELLOW)
-        surface.blit(prompt, prompt.get_rect(center=(LOGICAL_WIDTH // 2, LOGICAL_HEIGHT - 150)))
+        surface.blit(prompt, prompt.get_rect(center=(LOGICAL_WIDTH // 2, LOGICAL_HEIGHT - 180)))
+
+        menu = self._small.render("O — Options      E — Level editor", True, WHITE)
+        surface.blit(menu, menu.get_rect(center=(LOGICAL_WIDTH // 2, LOGICAL_HEIGHT - 110)))
 
         # Character previews with their number.
         spacing = 220

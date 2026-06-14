@@ -13,15 +13,23 @@ import random
 import pygame
 
 from exit_dash.core import resources
-from exit_dash.core.constants import BLACK, FIXED_FPS, LOGICAL_HEIGHT, LOGICAL_WIDTH, WHITE
+from exit_dash.core.constants import (
+    BLACK,
+    BRIGHT_GREEN,
+    FIXED_FPS,
+    LOGICAL_HEIGHT,
+    LOGICAL_WIDTH,
+    WHITE,
+)
 from exit_dash.core.input import InputState, PlayerInput
 from exit_dash.core.keybindings import DEFAULT_BINDINGS, key_names
 from exit_dash.core.paths import asset_path
-from exit_dash.core.scene import Quit, Replace, Scene, Transition
+from exit_dash.core.scene import Pop, Quit, Replace, Scene, Transition
 from exit_dash.core.settings import Settings
 from exit_dash.entities.background import Background
 from exit_dash.entities.player import PlayableCharacter
 from exit_dash.world import hints, loader
+from exit_dash.world.level import LevelData
 from exit_dash.world.world import World
 
 MAX_SHIPPED_LEVEL = 4
@@ -43,12 +51,19 @@ class LevelScene(Scene):
         *,
         audio: bool = True,
         final_level: int = MAX_SHIPPED_LEVEL,
+        custom_data: LevelData | None = None,
+        sandbox: bool = False,
     ) -> None:
         self.level = level
         self.which_char = which_char
         self.settings = settings
         self.audio = audio
         self.final_level = final_level
+        # A one-off level supplied by the editor: built from this data instead of a file
+        # or the generator, and the scene pops back to its caller (the editor) when the
+        # run ends rather than going to the title/game-over flow.
+        self.custom_data = custom_data
+        self.sandbox = sandbox
         self.theme = "stone"
         self.player = PlayableCharacter(0, 0, which_char=which_char)
         self.world: World = self._build_world(level)
@@ -67,8 +82,21 @@ class LevelScene(Scene):
     def _build_world(self, level: int) -> World:
         background = self._make_background()
         rng = random.Random(level)
-        level_path = asset_path("levels", f"lvl_{level}.dat")
         hint = hints.hint_for_level(level, key_names())
+        if self.custom_data is not None:
+            return World.from_level_data(
+                self.custom_data,
+                player=self.player,
+                screen_w=LOGICAL_WIDTH,
+                screen_h=LOGICAL_HEIGHT,
+                theme=self.theme,
+                level=level,
+                decorations=self.settings.decorations,
+                rng=rng,
+                background=background,
+                hint=hint,
+            )
+        level_path = asset_path("levels", f"lvl_{level}.dat")
         if level_path.is_file() and level <= MAX_SHIPPED_LEVEL:
             data = loader.read_level(level_path)
             return World.from_level_data(
@@ -126,7 +154,7 @@ class LevelScene(Scene):
             DEFAULT_BINDINGS["EXIT"],
             DEFAULT_BINDINGS["EXIT2"],
         ):
-            return Quit()
+            return Pop() if self.sandbox else Quit()
         return None
 
     # -- update -----------------------------------------------------------------------
@@ -180,6 +208,9 @@ class LevelScene(Scene):
         return None
 
     def _game_over(self, *, won: bool) -> Transition:
+        # Editor test-runs return to the editor; normal play goes to the game-over screen.
+        if self.sandbox:
+            return Pop(won)
         from exit_dash.scenes.gameover import GameOverScene
 
         return Replace(GameOverScene(won, self.settings, audio=self.audio))
@@ -235,6 +266,8 @@ class LevelScene(Scene):
             self._draw_banner(surface)
         if world.level_dark:
             world.darken(surface, 130)
+        if self.settings.developer_mode:
+            self._draw_dev_overlay(surface)
 
     def _draw_banner(self, surface: pygame.Surface) -> None:
         level_label = self._med_font.render(f"Level {self.level}", True, WHITE)
@@ -242,3 +275,17 @@ class LevelScene(Scene):
         if self.world.level_hint:
             hint_label = self._small_font.render(self.world.level_hint, True, WHITE)
             surface.blit(hint_label, (60, 180))
+
+    def _draw_dev_overlay(self, surface: pygame.Surface) -> None:
+        """A small debug HUD (drawn over everything, including darkness)."""
+        world = self.world
+        p = self.player
+        lines = [
+            f"level {self.level}   dark={world.level_dark}   autoscroll={world.autoscroll}",
+            f"pos ({p.x:.0f}, {p.y:.0f})   vel ({p.vx:.1f}, {p.vy:.1f})",
+            f"lives {p.lives}   coins {p.coins}   key={p.has_key}",
+            f"platforms {len(world.platforms)}   enemies {len(world.enemies)}",
+        ]
+        for i, line in enumerate(lines):
+            label = self._small_font.render(line, True, BRIGHT_GREEN)
+            surface.blit(label, (16, 16 + i * 22))
