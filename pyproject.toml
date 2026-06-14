@@ -54,11 +54,6 @@ include = ["src/exit_dash", "README.md", "LICENSE", "CREDITS.md"]
 target-version = "py312"
 line-length = 100
 src = ["src", "tests"]
-# The legacy `data/` package and `RunGame.py` are the Python-2 behavioral reference kept
-# only until `src/exit_dash` reaches parity; they are exempt from lint/format.
-extend-exclude = ["data", "RunGame.py"]
-# Honour the exclude even when pre-commit passes file paths explicitly.
-force-exclude = true
 
 [tool.ruff.lint]
 select = [

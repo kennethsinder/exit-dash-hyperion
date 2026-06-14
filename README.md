@@ -4,9 +4,9 @@ A 2D platformer, originally written in 2014 (Python 2 + pygame 1.9.3) and modern
 run on **Python 3.12+** with **[pygame-ce](https://pyga.me/)** across macOS, Linux, and
 Windows.
 
-> **Status:** active modernization. The game logic is being rewritten from the legacy
-> `data/` package into `src/exit_dash/` (scene manager, sprite groups, fixed-timestep
-> physics, full type hints). See [CLAUDE.md](CLAUDE.md) for the architecture.
+Rebuilt with a scene manager, a fixed-timestep simulation, dataclasses and full type
+hints. See [CLAUDE.md](CLAUDE.md) for the architecture and the (small) list of original
+features not yet re-ported (options menu, level editor).
 
 ## Play
 

@@ -22,8 +22,7 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
 ASSETS = REPO / "src" / "exit_dash" / "assets"
-# Scan both the new package and the legacy reference tree for asset references.
-SOURCE_DIRS = [REPO / "src" / "exit_dash", REPO / "data"]
+SOURCE_DIRS = [REPO / "src" / "exit_dash"]
 
 ASSET_EXTS = ("png", "jpg", "jpeg", "bmp", "gif", "ogg", "mp3", "wav", "ttf", "otf")
 _FILENAME_RE = re.compile(rf"[\w .()-]+?\.(?:{'|'.join(ASSET_EXTS)})")
