@@ -72,10 +72,10 @@ The two originally-deferred features are now ported as well:
 - **In-game level editor** (`scenes/editor.py` over `world/editing.py`) — a schematic,
   mouse-driven editor. The display-free `EditorModel` holds the records, enforces the
   `.dat` slot limits, round-trips through `world/loader.py`, and exposes `playability()`,
-  which encodes the structural rules `World.from_level_data` needs to build a level
-  without crashing or hanging (≥3 platforms with ≥2 distinct non-spawn x — otherwise the
-  `generate_mobs` placement loop never terminates). Levels save to `lvl_custom.dat` in the
-  user data dir and can be test-played in place (a "sandbox" `LevelScene` that pops back).
+  which enforces the real build floor `World.from_level_data` needs (≥2 platforms, since
+  the build seeds its platform extremes from `platforms[1]`). Levels save to
+  `lvl_custom.dat` in the user data dir and can be test-played in place (a "sandbox"
+  `LevelScene` that pops back).
 
 ## Gotchas
 
@@ -84,3 +84,8 @@ The two originally-deferred features are now ported as well:
 - Level `.dat` files historically had mixed CRLF/LF line endings — the loader normalizes
   on read; `.gitattributes` keeps them LF.
 - Audio/display may be unavailable in CI; guard with the patterns in `core/app.py`.
+- `World.generate_mobs` places ground mobs by rejection-sampling a non-spawn platform
+  whose x differs from the longest platform's. It pre-checks that such a platform exists
+  and places none otherwise, so it can't hang on degenerate level data — but that means
+  the loop's RNG draws are conditional on eligibility. Preserve the existing draw order if
+  you touch it, or you'll change procedurally-generated levels.
