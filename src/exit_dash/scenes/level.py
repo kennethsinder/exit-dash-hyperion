@@ -17,7 +17,7 @@ from exit_dash.core.constants import BLACK, FIXED_FPS, LOGICAL_HEIGHT, LOGICAL_W
 from exit_dash.core.input import InputState, PlayerInput
 from exit_dash.core.keybindings import DEFAULT_BINDINGS, key_names
 from exit_dash.core.paths import asset_path
-from exit_dash.core.scene import Quit, Scene, Transition
+from exit_dash.core.scene import Quit, Replace, Scene, Transition
 from exit_dash.core.settings import Settings
 from exit_dash.entities.background import Background
 from exit_dash.entities.player import PlayableCharacter
@@ -36,12 +36,19 @@ _BACKGROUND_BY_THEME = {
 
 class LevelScene(Scene):
     def __init__(
-        self, level: int, which_char: int, settings: Settings, *, audio: bool = True
+        self,
+        level: int,
+        which_char: int,
+        settings: Settings,
+        *,
+        audio: bool = True,
+        final_level: int = MAX_SHIPPED_LEVEL,
     ) -> None:
         self.level = level
         self.which_char = which_char
         self.settings = settings
         self.audio = audio
+        self.final_level = final_level
         self.theme = "stone"
         self.player = PlayableCharacter(0, 0, which_char=which_char)
         self.world: World = self._build_world(level)
@@ -167,10 +174,15 @@ class LevelScene(Scene):
             self._banner_frames -= 1
 
         if not alive:
-            return Quit()  # TODO: GameOverScene (Phase 6)
+            return self._game_over(won=False)
         if reached_exit:
             return self._advance_level()
         return None
+
+    def _game_over(self, *, won: bool) -> Transition:
+        from exit_dash.scenes.gameover import GameOverScene
+
+        return Replace(GameOverScene(won, self.settings, audio=self.audio))
 
     def _update_kill_bonus(self) -> None:
         if self.player.mob_jumping and self._allow_kill_bonus:
@@ -181,6 +193,8 @@ class LevelScene(Scene):
 
     def _advance_level(self) -> Transition | None:
         self.level += 1
+        if self.level > self.final_level:
+            return self._game_over(won=True)
         self.player.has_key = False
         self.world = self._build_world(self.level)
         self._banner_frames = _HINT_FRAMES

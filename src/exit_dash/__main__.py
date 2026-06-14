@@ -41,8 +41,8 @@ def main(argv: list[str] | None = None) -> int:
 
     # Import here so `--version`/`--help` stay fast and import-side-effect free.
     from exit_dash.core.app import Application
+    from exit_dash.core.scene import Scene
     from exit_dash.core.settings import load_settings
-    from exit_dash.scenes.level import LevelScene
 
     settings = load_settings()
     app = Application(
@@ -51,7 +51,16 @@ def main(argv: list[str] | None = None) -> int:
         vsync=not args.no_vsync and settings.vsync,
     )
     try:
-        scene = LevelScene(args.level, args.character, settings, audio=app.audio_enabled)
+        scene: Scene
+        if args.headless:
+            # In CI/smoke runs, exercise the actual gameplay loop rather than the title.
+            from exit_dash.scenes.level import LevelScene
+
+            scene = LevelScene(args.level, args.character, settings, audio=app.audio_enabled)
+        else:
+            from exit_dash.scenes.title import TitleScene
+
+            scene = TitleScene(settings, audio=app.audio_enabled)
         app.run(scene, max_frames=args.frames)
     finally:
         app.quit()
