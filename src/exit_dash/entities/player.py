@@ -109,6 +109,26 @@ class PlayableCharacter(Character):
         for obj in movable_objects:
             obj.y += amount  # type: ignore[attr-defined]
 
+    def set_map_obj_x(
+        self,
+        ai_characters: Sequence[AICharacter],
+        movable_objects: Sequence[object],
+        platforms: Sequence[Platform],
+        new_x: float,
+    ) -> None:
+        """Shift the whole world so platform 0's left edge lands at ``new_x``."""
+        shift = new_x - platforms[0][0]
+        self.x += shift
+        if self.respawn_point:
+            self.respawn_point[0] += shift
+        for obj in movable_objects:
+            obj.x += shift  # type: ignore[attr-defined]
+        for ai in ai_characters:
+            if ai.limit[0] != -1:
+                ai.limit[0] += shift
+            if ai.limit[1] != -1:
+                ai.limit[1] += shift
+
     def get_next_platform(self, platforms: Sequence[Platform]) -> Platform:
         assert self.longest_platform is not None
         current_x = platforms[self.current_platform].x
