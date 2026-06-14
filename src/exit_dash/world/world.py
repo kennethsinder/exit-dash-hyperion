@@ -123,7 +123,18 @@ class World:
         quantity = len(self.platforms) - 1
         sample = AICharacter(0, 0, 0, 0, ("slime", -1, -1))
         self.mobs = []
+        # Ground mobs are placed on a random non-spawn platform that does not share the
+        # longest platform's x (the original avoided clustering them there). The rejection
+        # loop below re-rolls until it finds such a platform, so it only terminates if at
+        # least one exists; with none it would spin forever. Pre-checking eligibility makes
+        # generation provably terminating for any level data (e.g. a hand-built level whose
+        # non-spawn platforms all stack at one x) — we simply place no ground mobs instead.
+        # When eligible platforms exist this consumes RNG identically to the original, so
+        # procedurally-generated levels remain bit-for-bit reproducible.
+        eligible = any(p[0] != longest[0] for p in self.platforms[1:])
         for _ in range(quantity):
+            if not eligible:
+                break
             which = self.rng.randint(1, len(self.platforms) - 1)
             while self.platforms[which][0] == longest[0]:
                 which = self.rng.randint(1, len(self.platforms) - 1)
@@ -240,6 +251,11 @@ class World:
         background: Background | None = None,
         hint: str = "",
     ) -> World:
+        # gather_platform_info() seeds its running extremes from platforms[1], so a level
+        # needs a spawn platform plus at least one more to build at all. Fail with a clear
+        # message rather than an opaque IndexError deep in the build.
+        if len(data.platforms) < 2:
+            raise ValueError("a level needs at least two platforms to build")
         world = cls(
             player,
             screen_w,
