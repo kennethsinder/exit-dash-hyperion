@@ -1,6 +1,6 @@
 # coding=utf-8
 from random import randint
-from game import *
+from data.game import *
 
 class Block(object):
 

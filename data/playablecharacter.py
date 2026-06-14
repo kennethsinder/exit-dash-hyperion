@@ -1,8 +1,9 @@
 # coding=utf-8
-import math, sys, pygame, keymap as k
+import math, sys, pygame
+from data import keymap as k
 from random import randint
 from pygame.locals import *
-from character import Character
+from data.character import Character
 import os
 
 
@@ -190,10 +191,10 @@ class PlayableCharacter(Character):
     def determineLongestPlatform(self, platforms):
         if not self.longestPlatform:
             self.longestPlatform = 0
-            for platformIndex in xrange(1, len(platforms)):
+            for platformIndex in range(1, len(platforms)):
                 if platforms[platformIndex].width > platforms[self.longestPlatform].width:
                     self.longestPlatform = platformIndex
-            for platformIndex in xrange(0, len(platforms)):
+            for platformIndex in range(0, len(platforms)):
                 if platforms[platformIndex][0] == platforms[self.longestPlatform][0] and \
                                 platforms[platformIndex][1] >= platforms[self.longestPlatform][1]:
                     self.longestPlatform = platformIndex

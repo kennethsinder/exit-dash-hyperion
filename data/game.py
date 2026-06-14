@@ -1,5 +1,6 @@
 # coding=utf-8
-import sys, math, pygame, os.path, keymap as k, random as r
+import sys, math, pygame, os.path, random as r
+from data import keymap as k
 from pygame.locals import *
 from data.aicharacter import AICharacter
 from data.background import Background
@@ -445,7 +446,7 @@ class Game(object):
         permissions = 'r'
         dataFile = open(fileName, permissions)
         uselessWarning = dataFile.readline()
-        print uselessWarning
+        print(uselessWarning)
 
         # Read settings
         self.developerMode = self.toBool(dataFile.readline())
@@ -611,7 +612,7 @@ class Game(object):
         platformDataSize = 3
         currentPlatformIndex = 0
         platforms = []
-        platformCoords = [[self.defaultValue] * platformDataSize for x in xrange(numPlatforms)]
+        platformCoords = [[self.defaultValue] * platformDataSize for x in range(numPlatforms)]
         platformSample = Platform(self.defaultValue, self.defaultValue, 0, 0, 0, theme)
 
         # Block variables
@@ -620,7 +621,7 @@ class Game(object):
         blockDataSize = 3
         currentBlockIndex = 0
         blocks = []
-        blockCoords = [[self.defaultValue] * blockDataSize for x in xrange(numBlocks)]
+        blockCoords = [[self.defaultValue] * blockDataSize for x in range(numBlocks)]
         key = Key(self.defaultValue, self.defaultValue, 'blue')
         coinID = 0
         mysteryID = 1
@@ -712,7 +713,7 @@ class Game(object):
                                                                  self.mousey_hover - platformSample.tileWidth))
                 self.displaysurf.blit(platformSample.leftImage, (platformCoords[currentPlatformIndex][0],
                                                                  platformCoords[currentPlatformIndex][2]))
-                for x in xrange(platformCoords[currentPlatformIndex][0] + platformSample.tileWidth, self.mousex_hover -
+                for x in range(platformCoords[currentPlatformIndex][0] + platformSample.tileWidth, self.mousex_hover -
                         2 * platformSample.tileWidth, platformSample.tileWidth):
                     self.displaysurf.blit(platformSample.image, (x, platformCoords[currentPlatformIndex][2]))
                 if self.clicking:
@@ -932,7 +933,7 @@ class Game(object):
     def generateFences(self):
         sampleFence = Checkpoint(self.defaultValue, self.defaultValue)
         self.fences = []
-        for platformIndex in xrange(1, len(self.platforms), 5):
+        for platformIndex in range(1, len(self.platforms), 5):
             if self.platforms[platformIndex].width >= 2 * sampleFence.width and not self.autoscroll:
                 fenceX = self.platforms[platformIndex][0] + 20
                 fenceY = self.platforms[platformIndex][1] - sampleFence.height
@@ -944,7 +945,7 @@ class Game(object):
     def generateFoliage(self):
         self.foliage = []
         for platform in self.platforms:
-            for x in xrange(int(platform.x), int(platform.x + platform.width - 100), 100):
+            for x in range(int(platform.x), int(platform.x + platform.width - 100), 100):
                 if r.randint(0, 10) == 0 and self.decorations:
                     decoration = BackgroundFoliage(x, platform.y)
                     decoration.y -= decoration.height
@@ -1416,7 +1417,7 @@ class Game(object):
         permissions = 'r'
         dataFile = open(fileName, permissions)
         uselessWarning = dataFile.readline()
-        print uselessWarning
+        print(uselessWarning)
         data = []
         line = 0
         for ln in dataFile:
@@ -1431,7 +1432,7 @@ class Game(object):
         # Set up platforms
         maxNumPlatforms = 25
         platformDataSize = 3
-        for i in xrange(line, platformDataSize * (maxNumPlatforms - 1) + 1, platformDataSize):
+        for i in range(line, platformDataSize * (maxNumPlatforms - 1) + 1, platformDataSize):
             if data[i] != self.defaultValue:
                 self.platforms.append(Platform(data[i], data[i + 1], 0, 0, data[i + 2], theme))
             line += platformDataSize
@@ -1448,7 +1449,7 @@ class Game(object):
         # Set up bonus blocks
         maxNumBlocks = 25
         blockDataSize = 3
-        for i in xrange(line, line + (blockDataSize * (maxNumBlocks - 1) + 1), blockDataSize):
+        for i in range(line, line + (blockDataSize * (maxNumBlocks - 1) + 1), blockDataSize):
             if data[i] != self.defaultValue and data[i + 2] == 0:
                 self.blocks.append(Block(data[i], data[i + 1], 'coin'))
             elif data[i] != self.defaultValue:
@@ -1462,7 +1463,7 @@ class Game(object):
             ledge = Platform(data[line], data[line + 1], 0, 0, data[line + 2], 'snow')
             self.platforms.append(ledge)
             self.allMovableObjects.append(ledge)
-            for i in xrange(int(ledge[0] + ledge.tileWidth * 2), int(ledge[2] - ledge.tileWidth * 2), 40):
+            for i in range(int(ledge[0] + ledge.tileWidth * 2), int(ledge[2] - ledge.tileWidth * 2), 40):
                 self.icicles.append(FallingSpike(i, ledge[3]))
             self.allMovableObjects.extend(self.icicles)
         line += ledgeDataSize
@@ -1515,7 +1516,7 @@ class Game(object):
         blankLine = str(self.defaultValue) + '\n'
         maxNumPlatforms = 25
         platformDataSize = 3
-        for i in xrange(maxNumPlatforms):
+        for i in range(maxNumPlatforms):
             if i < len(self.platforms):
                 dataFile.write(str(self.platforms[i].x) + '\n' + str(self.platforms[i].y) + '\n' +
                                str(self.platforms[i].width) + '\n')
@@ -1529,7 +1530,7 @@ class Game(object):
             dataFile.write(blankLine * poolDataSize)
         maxNumBlocks = 25
         blockDataSize = 3
-        for i in xrange(maxNumBlocks):
+        for i in range(maxNumBlocks):
             if i < len(self.blocks):
                 dataFile.write(str(self.blocks[i].x) + '\n' + str(self.blocks[i].y) + '\n')
                 if self.blocks[i].form == 'coin':
@@ -1576,7 +1577,7 @@ class Game(object):
     # --------------------------------------------------------------------------------------------------------------
 
     def executeLevels(self, finalLevel=2):
-        for level in xrange(finalLevel + 1):
+        for level in range(finalLevel + 1):
             self.loopThroughLevel(level)
 
     # --------------------------------------------------------------------------------------------------------------

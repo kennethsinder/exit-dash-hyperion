@@ -1,5 +1,5 @@
 # coding=utf-8
-from game import *
+from data.game import *
 import os
 
 class Pool(object):

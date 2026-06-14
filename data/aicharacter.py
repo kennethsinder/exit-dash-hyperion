@@ -1,7 +1,7 @@
 # coding=utf-8
 from random import randint
-import pygame, math
-from character import *
+import pygame, math, os
+from data.character import *
 
 class AICharacter(Character):
 
