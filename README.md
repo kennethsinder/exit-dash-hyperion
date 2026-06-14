@@ -5,8 +5,8 @@ run on **Python 3.12+** with **[pygame-ce](https://pyga.me/)** across macOS, Lin
 Windows.
 
 Rebuilt with a scene manager, a fixed-timestep simulation, dataclasses and full type
-hints. See [CLAUDE.md](CLAUDE.md) for the architecture and the (small) list of original
-features not yet re-ported (options menu, level editor).
+hints, including an in-game options menu and a level editor. See [CLAUDE.md](CLAUDE.md)
+for the architecture.
 
 ## Play
 
@@ -32,6 +32,15 @@ uv run exit-dash-hyperion --windowed
 | Jump   | ↑ or Space |
 | Duck   | ↓ |
 | Quit   | Esc or Q |
+
+From the title screen, press **O** for the options menu or **E** for the level editor.
+
+### Level editor
+
+Press **E** on the title screen to build a custom level: number keys pick a tool
+(platform / coin / block / pool / ledge / door), left-click places and right-click
+erases, `[`/`]` size the brush, the arrow keys pan, and `S`/`L` save and load
+`lvl_custom.dat`. Press `P` to test-play; `H` toggles the on-screen help.
 
 ## Development
 

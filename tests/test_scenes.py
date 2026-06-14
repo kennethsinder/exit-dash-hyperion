@@ -28,6 +28,26 @@ def test_title_quits_on_escape(pygame_ready):
     assert not manager.running
 
 
+def test_title_opens_options(pygame_ready):
+    from exit_dash.core.scene import Push
+    from exit_dash.scenes.options import OptionsScene
+
+    scene = TitleScene(_settings(), audio=False)
+    transition = scene.handle_event(pygame.event.Event(pygame.KEYDOWN, key=pygame.K_o))
+    assert isinstance(transition, Push)
+    assert isinstance(transition.scene, OptionsScene)
+
+
+def test_title_opens_editor(pygame_ready):
+    from exit_dash.core.scene import Push
+    from exit_dash.scenes.editor import EditorScene
+
+    scene = TitleScene(_settings(), audio=False)
+    transition = scene.handle_event(pygame.event.Event(pygame.KEYDOWN, key=pygame.K_e))
+    assert isinstance(transition, Push)
+    assert isinstance(transition.scene, EditorScene)
+
+
 def test_gameover_returns_to_title(pygame_ready):
     manager = SceneManager(GameOverScene(won=True, settings=_settings(), audio=False))
     manager.handle_event(pygame.event.Event(pygame.KEYDOWN, key=pygame.K_RETURN))

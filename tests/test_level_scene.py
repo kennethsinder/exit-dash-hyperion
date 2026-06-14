@@ -9,6 +9,15 @@ from exit_dash.core.settings import Settings
 from exit_dash.scenes.level import LevelScene
 
 
+def test_developer_overlay_draws(pygame_ready):
+    import pygame
+
+    settings = Settings(music_enabled=False, developer_mode=True)
+    scene = LevelScene(1, which_char=1, settings=settings, audio=False)
+    # Drawing with the developer overlay enabled must not raise.
+    scene.draw(pygame.Surface((1280, 720)), 0.0)
+
+
 @pytest.mark.parametrize("level", [1, 2])
 def test_level_runs_headless(level):
     settings = Settings(music_enabled=False, developer_mode=False, decorations=True)

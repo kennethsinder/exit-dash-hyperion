@@ -13,9 +13,10 @@ Guidance for Claude Code (and other agents — see `AGENTS.md`) working in this 
 ```
 src/exit_dash/          # the game (single source of truth)
   core/                 # engine: app loop, scene stack, input, settings, resources, paths
-  scenes/               # screens: title, level, game-over (options + editor: see below)
+  scenes/               # screens: title, options, level, editor, game-over
+  ui/                   # widgets.py — keyboard-driven menu toolkit (used by options)
   entities/             # player, enemy, platform, block, pool, spike, door, key, ...
-  world/                # LevelData + World, .dat loader, procedural generator, hints
+  world/                # LevelData + World, .dat loader/editor model, generator, hints
   assets/               # bundled images, audio, fonts, level data (.dat)
 tests/                  # pytest suite (headless via SDL dummy drivers)
 ```
@@ -54,22 +55,27 @@ CI matrix: {ubuntu, macos, windows} × Python {3.12, 3.13, 3.14}.
 - **Tests.** Add/extend tests in `tests/` for new behavior. Everything runs headless via
   `SDL_VIDEODRIVER=dummy` / `SDL_AUDIODRIVER=dummy` (set in `tests/conftest.py`).
 
-## Status & not-yet-ported
+## Status
 
 The Python-2 → 3 + pygame-ce modernization is complete: the legacy `data/` tree has been
 removed and `src/exit_dash/` is the only implementation. Behavior that had to be preserved
 (collision feel, `.dat` level semantics, per-character stats, move-the-world camera,
 autoscroll, torch/darkness, generator RNG order) is locked in by the tests.
 
-**Not yet ported from the original** (the game is fully playable without them — good
-next tasks):
+The two originally-deferred features are now ported as well:
 
-- **Options menu** — settings exist (`core/settings.py`) and persist, but there's no
-  in-game UI to change them yet. A `scenes/options.py` + `ui/widgets.py` (button/slider/
-  toggle) would wire it up.
-- **In-game level editor** — the original let you build/save custom levels to
-  `lvl_custom.dat`; `world/loader.py` can already read/write the format, so this is an
-  editor `Scene` on top of it.
+- **Options menu** (`scenes/options.py` + `ui/widgets.py`) — a keyboard-driven menu that
+  edits the live `Settings` and persists them. It only exposes settings that actually do
+  something (music/volume/fullscreen/decorations and the developer overlay); the legacy
+  `antialiasing`/`resolution`/`vsync` knobs are launch-only or vestigial and stay out of
+  the UI rather than becoming dead toggles.
+- **In-game level editor** (`scenes/editor.py` over `world/editing.py`) — a schematic,
+  mouse-driven editor. The display-free `EditorModel` holds the records, enforces the
+  `.dat` slot limits, round-trips through `world/loader.py`, and exposes `playability()`,
+  which encodes the structural rules `World.from_level_data` needs to build a level
+  without crashing or hanging (≥3 platforms with ≥2 distinct non-spawn x — otherwise the
+  `generate_mobs` placement loop never terminates). Levels save to `lvl_custom.dat` in the
+  user data dir and can be test-played in place (a "sandbox" `LevelScene` that pops back).
 
 ## Gotchas
 
