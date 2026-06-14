@@ -8,7 +8,23 @@ free. A higher-level action map is layered on top of this in :mod:`exit_dash` la
 
 from __future__ import annotations
 
+from dataclasses import dataclass
+
 import pygame
+
+
+@dataclass(frozen=True)
+class PlayerInput:
+    """A frame's worth of player intent, decoupled from physical keys.
+
+    Scenes build this from an :class:`InputState` + key bindings and hand it to the
+    player, so the player's logic is testable without pygame input.
+    """
+
+    left: bool = False
+    right: bool = False
+    jump: bool = False
+    duck: bool = False
 
 
 class InputState:
