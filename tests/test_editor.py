@@ -60,23 +60,22 @@ def test_round_trips_through_loader(tmp_path):
 
 
 def test_too_few_platforms_is_unplayable():
-    model = EditorModel(
-        platforms=[PlatformRec(0, 0, 100), PlatformRec(0, 0, 100)],
-        door=DoorRec(0, 0),
-    )
+    # A lone spawn platform can't build: gather_platform_info() seeds from platforms[1].
+    model = EditorModel(platforms=[PlatformRec(0, 0, 100)], door=DoorRec(0, 0))
     ok, reason = model.playability()
     assert not ok
     assert "platform" in reason
 
 
-def test_identical_x_platforms_is_unplayable():
-    # All non-spawn platforms sharing an x would hang generate_mobs; must be rejected.
+def test_identical_x_platforms_is_playable():
+    # All non-spawn platforms sharing an x used to hang generate_mobs; the engine now
+    # handles it (placing no ground mobs), so the editor no longer rejects such levels.
     model = EditorModel(
         platforms=[PlatformRec(0, 0, 100), PlatformRec(500, 100, 100), PlatformRec(500, 300, 100)],
         door=DoorRec(0, 0),
     )
     ok, _ = model.playability()
-    assert not ok
+    assert ok
 
 
 def test_editor_scene_places_and_can_test_play(pygame_ready):
@@ -99,7 +98,7 @@ def test_editor_scene_places_and_can_test_play(pygame_ready):
 
 def test_custom_level_runs_headless():
     # The full editor->play path: a level built from editor data boots and runs without
-    # crashing or hanging (the latter being the generate_mobs risk playability() guards).
+    # crashing. (generate_mobs is hang-proof in the engine; see test_world.py.)
     data = EditorModel.blank().to_level_data()
     app = Application(headless=True)
     scene = LevelScene(

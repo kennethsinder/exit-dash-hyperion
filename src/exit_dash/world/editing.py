@@ -4,10 +4,11 @@ This is deliberately decoupled from pygame so it can be unit-tested directly. It
 the same records the ``.dat`` format stores (see :mod:`exit_dash.world.level`), enforces
 the format's fixed-slot limits, and round-trips through :mod:`exit_dash.world.loader`.
 
-:meth:`EditorModel.playability` encodes the structural rules a level must satisfy to be
-*built* by :func:`exit_dash.world.world.World.from_level_data` without crashing or
-hanging — most importantly that there are enough platforms with distinct x-positions
-that the mob-placement loop in ``generate_mobs`` can always terminate.
+:meth:`EditorModel.playability` encodes the structural floor a level must meet to be
+*built* by :func:`exit_dash.world.world.World.from_level_data` (at least two platforms,
+since the build seeds its platform extremes from ``platforms[1]``). Mob placement is now
+hang-proof in the engine itself, so the editor no longer needs to police platform
+x-positions to keep ``generate_mobs`` terminating.
 """
 
 from __future__ import annotations
@@ -150,14 +151,15 @@ class EditorModel:
     # -- validation & persistence -----------------------------------------------------
 
     def playability(self) -> tuple[bool, str]:
-        """Return ``(ok, reason)``. A non-ok level would crash/hang the level builder."""
-        if len(self.platforms) < 3:
-            return False, "need at least 3 platforms"
-        # generate_mobs() loops until it finds a non-spawn platform whose x differs from
-        # the longest platform's; that only terminates if the non-spawn platforms hold at
-        # least two distinct x-positions.
-        if len({p.x for p in self.platforms[1:]}) < 2:
-            return False, "non-spawn platforms need at least 2 distinct x-positions"
+        """Return ``(ok, reason)``. A non-ok level would fail to build at all.
+
+        The only hard requirement is a spawn platform plus at least one more: the build
+        seeds its platform extremes from ``platforms[1]``. Mob placement is hang-proof in
+        the engine regardless of where the platforms sit, so there are no other structural
+        rules to enforce here — winnability is left to the level designer.
+        """
+        if len(self.platforms) < 2:
+            return False, "need at least 2 platforms"
         return True, "ready to play"
 
     def save(self, path: Path) -> None:
