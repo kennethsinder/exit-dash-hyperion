@@ -99,3 +99,21 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+# Ruff
+.ruff_cache/
+
+# pytest
+.pytest_cache/
+
+# uv
+# (uv.lock IS committed for reproducible installs)
+
+# IDEs / editors
+.idea/
+.vscode/
+*.swp
+*~
+
+# macOS
+.DS_Store
