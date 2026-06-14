@@ -42,7 +42,7 @@ class Background(object):
                 self.invertedImage = pygame.transform.scale2x(self.invertedImage)
 
     # -----------------------------------------------------------------------------------------------------------------
-        
+
     def update(self, surface):
          # Swap background positions as needed
          if self.x < -self.width:
@@ -53,7 +53,7 @@ class Background(object):
              self.invertedX = self.width
          elif self.invertedX > self.width:
              self.invertedX = -self.width
-        
+
          # Verify corrent positioning of the backgrounds
          if self.x > self.invertedX:
              self.x = self.invertedX + self.width

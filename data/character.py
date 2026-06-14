@@ -297,7 +297,7 @@ class Character(object):
     # -----------------------------------------------------------------------------------------------------------------
 
     def draw(self, surface, FPS=60):
-        
+
         # Increment the current frame of the player walking animation
         footstepRarity = 1
         if pygame.time.get_ticks() % footstepRarity == 0:

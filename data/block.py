@@ -93,7 +93,7 @@ class Block(object):
     # -----------------------------------------------------------------------------------------------------------------
 
     def draw(self, keys, surface):
-        
+
         # Draw the correct type of block
         if self.form == 'locked':
             image = self.lockedImage

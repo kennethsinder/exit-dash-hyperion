@@ -37,7 +37,7 @@ class Game(object):
 
     def __init__(self, fps=65, fullscreen=True, numlevels=10):
         pygame.init()
-    
+
         # Initialize control variables for the game instance
         self.developerMode = True
         self.antialiasing = True
@@ -109,7 +109,7 @@ class Game(object):
         self.themeSong = 'music'+os.sep+'waking_devil.mp3'
         self.mainMusic = 'music'+os.sep+'char1_3.ogg'
         self.gameOverMusic = 'music'+os.sep+'gameover.mp3'
-    
+
         # Fonts
         self.genericFont = pygame.font.Font('fonts'+os.sep+'2lines.ttf', 48)
         self.medFont = pygame.font.Font('fonts'+os.sep+'jetset.ttf', 24)
@@ -119,7 +119,7 @@ class Game(object):
         # Level theme
         self.theme = 'stone'
         self.backgroundTheme = 'castle'
-    
+
         # Backgrounds
         self.origin = (0, 0)
         self.bgrdTitle = pygame.image.load('backgrounds'+os.sep+'main'+os.sep+'title_bgrd_compressed.png').convert()
@@ -263,13 +263,13 @@ class Game(object):
         keys = pygame.key.get_pressed()
         if keys[k.EXIT]:
             self.quitGame()
-    
+
     # --------------------------------------------------------------------------------------------------------------
 
     @staticmethod
     def distance(p0, p1):
         return math.sqrt((p0[0] - p1[0]) ** 2 + (p0[1] - p1[1]) ** 2)
-    
+
     # --------------------------------------------------------------------------------------------------------------
 
     def drawTempText(self, text, font, colour, coords, time, index, events):
@@ -296,7 +296,7 @@ class Game(object):
             self.displaysurf.blit(self.cursorImage, (self.mousex_hover, self.mousey_hover))
         else:
             self.displaysurf.blit(self.cursorClickedImage, (self.mousex, self.mousey))
-    
+
     # --------------------------------------------------------------------------------------------------------------
 
     def redrawAndProceedTick(self, mousex, mousey, mouseRegionUpdating=False):
@@ -314,7 +314,7 @@ class Game(object):
         else:
             self.fpsClock.tick(self.fps)
         self.measuredFPS = self.fpsClock.get_fps()
-    
+
     # --------------------------------------------------------------------------------------------------------------
 
     def showGameOverScreen(self, won):
@@ -343,13 +343,13 @@ class Game(object):
         onText = self.printText('ON', self.smlFont, white, (mainText.right + 50, coords[1] + 10))
         slash = self.printText(' / ', self.smlFont, white, (onText.right + 5, coords[1] + 10))
         offText = self.printText('OFF', self.smlFont, white, (slash.right + 5, coords[1] + 10))
-    
+
         # Make the ON/OFF text yellow if it is the selected option or if the mouse hovers over it
         if onText.collidepoint(mousehoverpos[0], mousehoverpos[1]) or on:
             onText = self.printText('ON', self.smlFont, yellow, (mainText.right + 50, coords[1] + 10))
         if offText.collidepoint(mousehoverpos[0], mousehoverpos[1]) or not on:
             offText = self.printText('OFF', self.smlFont, yellow, (slash.right + 5, coords[1] + 10))
-    
+
         # Return a toggle output
         if onText.collidepoint(mousepos[0], mousepos[1]) and self.clicking:
             return True
@@ -1146,7 +1146,7 @@ class Game(object):
 
         # Step 11: Save level to disk
         self.saveLevel(lvl)
-        
+
     # --------------------------------------------------------------------------------------------------------------
 
     def setupBgrd(self, environment):

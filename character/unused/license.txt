@@ -4,7 +4,7 @@
 	Platformer Art (Xeno Diversity) by Arsonide
 
 	------------------------------
-		
+
 		License (CC0)
 	http://creativecommons.org/publicdomain/zero/1.0/
 

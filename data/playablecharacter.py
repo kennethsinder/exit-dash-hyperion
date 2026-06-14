@@ -103,9 +103,9 @@ class PlayableCharacter(Character):
             self.respawnPoint[1] += amount
         for obj in movableObjects:
             obj.y += amount
-            
+
     # -----------------------------------------------------------------------------------------------------------------
-    
+
     def setMapObjX(self, aiCharacters, movableObjects, platforms, newX):
         # Shifts all of the map details
         shift = newX - platforms[0][0]

@@ -4,7 +4,7 @@
 	Platformer Art Deluxe (Pixel Redux) by Kenney Vleugels (www.kenney.nl)
 
 	------------------------------
-		
+
 		License (CC0)
 	http://creativecommons.org/publicdomain/zero/1.0/
 
